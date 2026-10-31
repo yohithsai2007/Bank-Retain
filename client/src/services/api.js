@@ -3,7 +3,10 @@
  * Centralized service for communicating with Express backend.
  */
 
-const API_BASE = '/api';
+// Support custom backend URL in cloud deployments (e.g. Vercel -> Render)
+// Falls back to '/api' in local development to utilize Vite dev server proxy
+const API_URL = import.meta.env.VITE_API_URL || '';
+const API_BASE = API_URL ? `${API_URL.replace(/\/$/, '')}/api` : '/api';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('bankretain_token');

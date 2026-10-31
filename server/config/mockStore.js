@@ -14,9 +14,25 @@ let seedData = null;
 
 function loadSeedData() {
   if (!seedData) {
-    const dataPath = path.resolve(__dirname, '../../database/seedData.json');
-    if (fs.existsSync(dataPath)) {
-      seedData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+    const candidatePaths = [
+      path.resolve(__dirname, '../../database/seedData.json'),
+      path.resolve(__dirname, '../database/seedData.json'),
+      path.resolve(__dirname, '../../seedData.json'),
+      path.resolve(__dirname, './seedData.json'),
+      path.resolve(process.cwd(), 'database/seedData.json'),
+      path.resolve(process.cwd(), '../database/seedData.json'),
+    ];
+
+    let foundPath = null;
+    for (const p of candidatePaths) {
+      if (fs.existsSync(p)) {
+        foundPath = p;
+        break;
+      }
+    }
+
+    if (foundPath) {
+      seedData = JSON.parse(fs.readFileSync(foundPath, 'utf8'));
     } else {
       seedData = { customers: [], transactions: [], balances: [], alerts: [], tasks: [], recommendations: [], riskAssessments: [], rms: [] };
     }
