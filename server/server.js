@@ -9,7 +9,8 @@ const db = require('./config/db');
 
 const PORT = parseInt(process.env.PORT || '5000', 10);
 
-const server = app.listen(PORT, async () => {
+// Bind explicitly to 0.0.0.0 for cloud container environments (Render, Railway, Fly.io)
+const server = app.listen(PORT, '0.0.0.0', async () => {
   console.log('================================================================');
   console.log(`🏦  BankRetain Backend Service Active on http://localhost:${PORT}`);
   console.log(`📡  Environment: ${process.env.NODE_ENV || 'development'}`);
